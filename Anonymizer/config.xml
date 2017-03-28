@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<config method = 'Mondrian' k = '10' >
+	<input filename='dataset/new.csv' separator=','/>
+	<output filename='census-income_Anon.csv'/>
+	<sqlitefile path='dbdir/Anonymizer.db'/>
+	<kid>
+		<att index='1' name='att1'/>
+		<att index='2' name='att2'/>
+	</kid>
+	<qid>
+		<att index='12' name='sex'>
+			<map>
+				<entry cat='Female' int='0' />
+				<entry cat='Male' int='1' />
+			</map>
+			<vgh value='[0:1]'>
+			</vgh>
+		</att>
+
+
+		<att index='0' name ='age'>
+			<vgh value='[0:100)'>
+				<node value='[0:50)'>
+					<node value='[0:25)'/>
+					<node value='[25:50)'/>
+				</node>
+				<node value='[50:100)'>
+					<node value='[50:75)'/>
+					<node value='[75:100)'/>
+				</node>
+			</vgh>
+		</att>
+		<att index='5' name='wage_per_hour'>
+			<vgh value='[0:10000)'>
+				<node value='[0:5000)'>
+					<node value='[0:2500)'/>
+					<node value='[2500:5000)'/>
+				</node>
+				<node value='[5000:10000)'>
+					<node value='[5000:7500)'/>
+					<node value='[7500:10000)'/>
+				</node>
+			</vgh>
+		</att>
+	</qid>
+	<sens>
+		<att index='41' name='salary'>
+			<map>
+				<entry cat='-_50000.' int='1' />
+				<entry cat='50000+.' int='2' />
+			</map>
+		</att>
+	</sens>
+</config>
