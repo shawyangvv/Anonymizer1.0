@@ -114,8 +114,9 @@ public class SqLiteWrapper implements DatabaseWrapper{
 
     private Connection getConnection() throws SQLException {
         loadDriver();
+        //sqLiteInstance.dbPath
 
-        sqLiteInstance.dbPath= System.getProperty("user.home") + "/Anonymizer" ;
+        //sqLiteInstance.dbPath= System.getProperty("user.home") + "/Anonymizer" ;
         if (!(new File(sqLiteInstance.dbPath)).exists()){
             boolean result = (new File(sqLiteInstance.dbPath)).mkdir();
             if(!result)
