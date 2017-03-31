@@ -70,10 +70,10 @@ public class Configuration {
     }
 
     private void parseConfigFile(String configFilename) throws Exception{
-        DocumentBuilderFactory domfac=DocumentBuilderFactory.newInstance();
-        DocumentBuilder dombuilder=domfac.newDocumentBuilder();
-        InputStream input=new FileInputStream(configFilename);
-        Document doc=dombuilder.parse(input);
+        DocumentBuilderFactory domfac = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dombuilder = domfac.newDocumentBuilder();
+        InputStream input = new FileInputStream(configFilename);
+        Document doc = dombuilder.parse(input);
 
         Node root = doc.getFirstChild();
         while(root.getNodeType() != Node.ELEMENT_NODE) {
@@ -166,7 +166,6 @@ public class Configuration {
                 kidAtts.add(index);
             }
         }
-
     }
 
     private void parseQidAtts(Node qid) throws Exception{

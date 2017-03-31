@@ -10,11 +10,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.sql.ResultSet;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import java.sql.ResultSet;
 import databasewrapper.SqLiteWrapper;
 import databasewrapper.QueryResult;
 import databasewrapper.DatabaseWrapper;
@@ -61,7 +62,7 @@ public abstract class Anonymizer {
             Long eid = insertTupleToEquivalenceTable(vals);
             insertTupleToAnonTable(vals, eid);
         }
-        //databaseWrapper.closeConn();
+
         System.out.println("read in "+ count +" records");
         input.close();
     }
@@ -78,12 +79,6 @@ public abstract class Anonymizer {
         boolean flag = true;
         while ((flag)&&(header=input.readLine())!=null && header.length()>0) {
             String[] title=header.split(conf.separator);
-            if(conf.kidAtts != null) {
-                ListIterator<Integer> iter = conf.kidAtts.listIterator();
-                while(iter.hasNext()) {
-                    title[iter.next()] = null;
-                }
-            }
             header="";
             for (int i = 0; i < title.length; i++){
                 if(title[i] != null) {
@@ -119,7 +114,6 @@ public abstract class Anonymizer {
                         connCat += orignalCat[j] + ",";
                     }
                     connCat=connCat.substring(0, connCat.length()-1);
-                    //System.out.println(connCat);
                     genVals[i]=connCat;
                 } else {
                     vals[conf.qidAtts[i].index] = genVals[i];
@@ -128,8 +122,15 @@ public abstract class Anonymizer {
 
             if(conf.kidAtts != null) {
                 ListIterator<Integer> iter = conf.kidAtts.listIterator();
+
                 while(iter.hasNext()) {
-                    vals[iter.next()] = null;
+                    int i = iter.next();
+                    long salt = System.currentTimeMillis();
+                    String origin = vals[i];
+                    Long salted = origin.hashCode() + salt;
+                    Integer hashVal = salted.hashCode();
+                    hashVal = Math.abs(hashVal);
+                    vals[i] = hashVal.toString();
                 }
             }
 
@@ -144,7 +145,6 @@ public abstract class Anonymizer {
             output.write(line);
         }
         output.close();
-
 //        this.anonTable.drop();
 //        this.eqTable.drop();
         this.databaseWrapper.flush();

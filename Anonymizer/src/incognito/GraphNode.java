@@ -92,9 +92,9 @@ public class GraphNode {
                 if(currEqNums > numEquivalences) {
                     selection = root;
                     numEquivalences = currEqNums;
-                } else {
-                    root.anonTable.drop();
-                    root.eqTable.drop();
+//                } else {
+//                    root.anonTable.drop();
+//                    root.eqTable.drop();
                 }
             } catch(Exception e) {
                 e.printStackTrace();

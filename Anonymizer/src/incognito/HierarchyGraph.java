@@ -80,16 +80,16 @@ public class HierarchyGraph {
         nextNodeIndex++;
     }
 
-    protected AnonRecordTable generalizeVals(GraphNode currRoot, Configuration conf, EquivalenceTable currEqTable, AnonRecordTable currAnonTable, EquivalenceTable eqTable, AnonRecordTable anonTable) throws Exception {
+    protected AnonRecordTable generalizeVals(GraphNode currRoot, Configuration conf, EquivalenceTable currEqTable, AnonRecordTable currAnonTable, EquivalenceTable oldEqTable, AnonRecordTable oldAnonTable) throws Exception {
         databaseWrapper = SqLiteWrapper.getInstance();
 
-        String iterateEquivalences = "SELECT EID FROM " + eqTable.getName();
+        String iterateEquivalences = "SELECT EID FROM " + oldEqTable.getName();
         QueryResult result = databaseWrapper.executeQuery(iterateEquivalences);
 
         while (result.hasNext()) {
             ResultSet rs = (ResultSet) result.next();
             Long oldEID = rs.getLong(1);
-            String[] genVals = eqTable.getGeneralization(oldEID);
+            String[] genVals = oldEqTable.getGeneralization(oldEID);
 
             for (int i = 0; i < genVals.length; i++) {
                 for (int j = 0; j < currRoot.getHierarchy(i); j++) {
@@ -101,7 +101,7 @@ public class HierarchyGraph {
             if (newEID.compareTo(new Long(-1)) == 0) {
                 newEID = currEqTable.insertEquivalence(genVals);
             }
-            currAnonTable.getCopy(anonTable, oldEID, newEID);
+            currAnonTable.getCopy(oldAnonTable, oldEID, newEID);
         }
         return currAnonTable;
     }

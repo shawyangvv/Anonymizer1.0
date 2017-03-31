@@ -1,15 +1,18 @@
 <?xml version="1.0"?>
 
-<config method = 'Mondrian' k = '10' >
-	<input filename='dataset/new.csv' separator=','/>
-	<output filename='dataset/census-income_Anon.csv'/>
+<config method = 'Incognito_L' k = '10' l="10" t="0.2">
+	<input filename='dataset/Test.csv' separator=','/>
+	<output filename='Test_Anon.csv'/>
 	<sqlitefile path='dbdir/Anonymizer.db'/>
+
 	<kid>
-		<att index='1' name='att1'/>
-		<att index='2' name='att2'/>
+		<att index='0' name='first_name'/>
+		<att index='1' name='last_name'/>
+		<att index="2" name="SSN"/>
+		<att index="5" name="Birth date"/>
 	</kid>
 	<qid>
-		<att index='12' name='sex'>
+		<att index='3' name='sex'>
 			<map>
 				<entry cat='Female' int='0' />
 				<entry cat='Male' int='1' />
@@ -19,37 +22,67 @@
 		</att>
 
 
-		<att index='0' name ='age'>
-			<vgh value='[0:100)'>
-				<node value='[0:50)'>
-					<node value='[0:25)'/>
-					<node value='[25:50)'/>
+		<att index='6' name ='Age'>
+			<vgh value='[0:120)'>
+				<node value='[0:60)'>
+					<node value='[0:30)'>
+						<node value="[0:15)"/>
+						<node value="[15:30)"/>
+					</node>
+					<node value='[30:60)'>
+						<node value="[30:45)"/>
+						<node value="[45:60)"/>
+					</node>
+
 				</node>
-				<node value='[50:100)'>
-					<node value='[50:75)'/>
-					<node value='[75:100)'/>
+				<node value='[60:120)'>
+					<node value='[60:90)'>
+						<node value="[60:75)"/>
+						<node value="[75:90)"/>
+					</node>
+
+					<node value='[90:120)'>
+						<node value="[90:105)"/>
+						<node value="[105:120)"/>
+					</node>
+
 				</node>
 			</vgh>
 		</att>
-		<att index='5' name='wage_per_hour'>
-			<vgh value='[0:10000)'>
-				<node value='[0:5000)'>
-					<node value='[0:2500)'/>
-					<node value='[2500:5000)'/>
+		<att index='8' name='Total Charge'>
+			<vgh value='[0:100000)'>
+				<node value='[0:50000)'>
+					<node value='[0:25000)'>
+						<node value="[0:12500)"/>
+						<node value="[12500:25000)"/>
+					</node>
+
+					<node value='[25000:50000)'>
+						<node value="[25000:37500)"/>
+						<node value="[37500:50000)"/>
+					</node>
+
 				</node>
-				<node value='[5000:10000)'>
-					<node value='[5000:7500)'/>
-					<node value='[7500:10000)'/>
+				<node value='[50000:100000)'>
+					<node value='[50000:75000)'>
+						<node value="[50000:62500)"/>
+						<node value="[62500:75000)"/>
+					</node>
+					<node value='[75000:100000)'>
+						<node value="[75000:87500)"/>
+						<node value="[87500:100000)"/>
+					</node>
 				</node>
 			</vgh>
 		</att>
 	</qid>
+
 	<sens>
-		<att index='41' name='salary'>
-			<map>
-				<entry cat='-_50000.' int='1' />
-				<entry cat='50000+.' int='2' />
-			</map>
+		<att index='7' name='Diagnosis'>
+			<!--<map>-->
+				<!--<entry cat='-_50000.' int='1' />-->
+				<!--<entry cat='50000+.' int='2' />-->
+			<!--</map>-->
 		</att>
 	</sens>
 </config>

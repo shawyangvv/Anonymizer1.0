@@ -27,14 +27,6 @@ public class AnonRecordTable {
     }
 
     private void createTable() {
-//        String check_SQL = "SELECT NAME FROM SQLITE_MASTER WHERE NAME = '" + tableName + "'";
-//        QueryResult result = databaseWrapper.executeQuery(check_SQL);
-//        if(result.hasNext()) {
-//            String drop_SQL = "DROP TABLE " + tableName;
-//            databaseWrapper.execute(drop_SQL);
-//           // databaseWrapper.commit();
-//        }
-
         String createTable_SQL = "CREATE TABLE IF NOT EXISTS " + tableName +
                 " (RID BIGINT PRIMARY KEY," +
                 " EID BIGINT, ";
@@ -47,7 +39,6 @@ public class AnonRecordTable {
         createTable_SQL = createTable_SQL.substring(0, createTable_SQL.length() - 2);
         createTable_SQL += ")";
         databaseWrapper.execute(createTable_SQL);
-        //databaseWrapper.commit();
     }
 
     public String getName() {
@@ -76,7 +67,6 @@ public class AnonRecordTable {
         }
         return qiVals;
     }
-
     public void insert(long eid, double[] qiVals, double[] sensVals) throws SQLException{
         Long rid = new Long(0);
         String select_SQL = "SELECT MAX(RID) FROM " + tableName;
@@ -96,7 +86,6 @@ public class AnonRecordTable {
         insert_SQL = insert_SQL.substring(0, insert_SQL.length()-2);
         insert_SQL += ")";
         databaseWrapper.execute(insert_SQL);
-       // databaseWrapper.commit();
     }
 
 
@@ -384,7 +373,6 @@ public class AnonRecordTable {
     public void updateEID(Long oldEID, Long newEID) {
         String update_SQL = "UPDATE " + tableName + " SET EID = " + newEID + " WHERE EID = " + oldEID;
         databaseWrapper.execute(update_SQL);
-        //databaseWrapper.commit();
     }
 
     public void getCopy(AnonRecordTable oldAnon, Long oldEID, Long newEID) {
@@ -396,8 +384,8 @@ public class AnonRecordTable {
             insert_SQL += ", ATT_" + sensIndices[i];
         }
         insert_SQL += " FROM " + oldAnon.getName() + " WHERE EID = " + oldEID;
-        databaseWrapper.execute(insert_SQL);
-       // databaseWrapper.commit();
+        databaseWrapper.executeInsert(insert_SQL);
+
     }
 
     public void getCut(AnonRecordTable oldAnon, Long oldEID, Long newEID) {
@@ -410,11 +398,9 @@ public class AnonRecordTable {
         }
         insert_SQL += " FROM " + oldAnon.getName() + " WHERE EID = " + oldEID;
         databaseWrapper.execute(insert_SQL);
-        //databaseWrapper.commit();
 
         String delete_SQL = "DELETE FROM " + oldAnon.tableName + " WHERE EID = " + oldEID;
         databaseWrapper.execute(delete_SQL);
-        //databaseWrapper.commit();
     }
 
 
@@ -428,16 +414,13 @@ public class AnonRecordTable {
         }
         insert_SQL += " FROM " + that.tableName + " WHERE RID = " + RID;
         databaseWrapper.execute(insert_SQL);
-        //databaseWrapper.commit();
 
         String delete_SQL = "DELETE FROM " + that.tableName + " WHERE RID = " + RID;
         databaseWrapper.execute(delete_SQL);
-        //databaseWrapper.commit();
     }
 
     public void drop() {
         String drop_SQL = "DROP TABLE " + tableName;
         databaseWrapper.execute(drop_SQL);
-        //databaseWrapper.commit();
     }
 }

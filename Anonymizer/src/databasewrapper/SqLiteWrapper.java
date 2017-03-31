@@ -13,17 +13,15 @@ import anonymizer.Configuration;
 public class SqLiteWrapper implements DatabaseWrapper{
     private final String driver = "org.sqlite.JDBC";
     private final String jdbc = "jdbc:sqlite:";
-    //private final String dbName = "Anonymizer.db";
+
     private String dbName;
     private String dbPath = null;
     private Connection conn = null;
 
-    //private static final SqLiteWrapper sqLiteInstance = new SqLiteWrapper();
     private static SqLiteWrapper sqLiteInstance = null;
 
 
-    private SqLiteWrapper() {
-    }
+    private SqLiteWrapper() {}
 
     public static void initialize(Configuration conf){
         if (sqLiteInstance != null) {
@@ -43,7 +41,6 @@ public class SqLiteWrapper implements DatabaseWrapper{
         }
 
         SqLiteWrapper.sqLiteInstance.dbName = new File(conf.sqlitefilePath.trim()).getName();
-
     }
 
     public static SqLiteWrapper getInstance() {
@@ -62,10 +59,24 @@ public class SqLiteWrapper implements DatabaseWrapper{
         try {
             stmt=sqLiteInstance.conn.createStatement();
             stmt.execute(sql);
+            sqLiteInstance.commit();
             stmt.close();
-            commit();
             return true;
         } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean executeInsert(String sql){
+        Statement stat = null;
+        try{
+            stat=sqLiteInstance.conn.createStatement();
+            stat.execute(sql);
+            stat.close();
+            commit();
+            return true;
+        } catch (SQLException e){
             e.printStackTrace();
             return false;
         }
@@ -76,13 +87,13 @@ public class SqLiteWrapper implements DatabaseWrapper{
         try {
             Statement stmt=sqLiteInstance.conn.createStatement();
             result=new QueryResult(stmt, sql);
-            //stmt.close();
+            sqLiteInstance.commit();
+            stmt.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
     }
-
 
     public void commit() {
         try {
@@ -114,9 +125,6 @@ public class SqLiteWrapper implements DatabaseWrapper{
 
     private Connection getConnection() throws SQLException {
         loadDriver();
-        //sqLiteInstance.dbPath
-
-        //sqLiteInstance.dbPath= System.getProperty("user.home") + "/Anonymizer" ;
         if (!(new File(sqLiteInstance.dbPath)).exists()){
             boolean result = (new File(sqLiteInstance.dbPath)).mkdir();
             if(!result)
@@ -124,14 +132,12 @@ public class SqLiteWrapper implements DatabaseWrapper{
         }
 
         conn = DriverManager.getConnection( sqLiteInstance.jdbc + "/" + sqLiteInstance.dbPath +"/" +sqLiteInstance.dbName , "", "" );
-        //Statement st = conn.createStatement();
         conn.setAutoCommit(false);
         return conn;
     }
 
     private void loadDriver() throws SQLException {
         try {
-            //System.loadLibrary(libName);
             sqLiteInstance.getClass();
             Class.forName(driver);
         } catch (ClassNotFoundException exception) {

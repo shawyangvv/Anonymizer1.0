@@ -60,8 +60,7 @@ public class Incognito_K extends Anonymizer {
 
     protected void insertTupleToAnonTable(String[] vals, long eid) throws Exception{
         Configuration currConf=this.conf;
-        double[] qiVals = new double[conf.qidAtts.length];
-        qiVals = anonTable.parseQiValue(vals, currConf);
+        double[] qiVals = anonTable.parseQiValue(vals, currConf);
         anonTable.insert(eid, qiVals, new double[0]);
     }
 
@@ -99,8 +98,8 @@ public class Incognito_K extends Anonymizer {
         if(check(currAnonTable)) {
             currGraph.setResult(true, currAnonTable, currEqTable);
         } else {
-            currAnonTable.drop();
-            currEqTable.drop();
+//            currAnonTable.drop();
+//            currEqTable.drop();
             currGraph.setResult(false, null, null);
         }
     }
@@ -128,9 +127,9 @@ public class Incognito_K extends Anonymizer {
                     selection = currRoot;
                     equivalencesNum = currEqNum;
                     selectionSuppList = suppressionList;
-                } else {
-                    currRoot.anonTable.drop();
-                    currRoot.eqTable.drop();
+//                } else {
+//                    currRoot.anonTable.drop();
+//                    currRoot.eqTable.drop();
                 }
             } catch(Exception e) {
                 e.printStackTrace();

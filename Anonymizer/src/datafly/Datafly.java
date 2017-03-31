@@ -53,15 +53,7 @@ public class Datafly extends Anonymizer{
     }
 
     protected void insertTupleToAnonTable(String[] vals, long eid) throws Exception{
-        double[] qiVals = new double[conf.qidAtts.length];
-        for(int i = 0; i < conf.qidAtts.length; i++) {
-            String attVal = vals[conf.qidAtts[i].index];
-            if(conf.qidAtts[i].catMapInt != null) {
-                qiVals[i] = conf.qidAtts[i].catMapInt.get(attVal);
-            } else {
-                qiVals[i] = Double.parseDouble(attVal);
-            }
-        }
+        double[] qiVals = anonTable.parseQiValue(vals, conf);
         anonTable.insert(eid, qiVals, new double[0]);
     }
 
@@ -117,8 +109,8 @@ public class Datafly extends Anonymizer{
                 }
                 newAnTable.getCopy(anonTable, oldEID, newEID);
             }
-            anonTable.drop();
-            eqTable.drop();
+//            anonTable.drop();
+//            eqTable.drop();
             eqTable = newEqTable;
             anonTable = newAnTable;
         }

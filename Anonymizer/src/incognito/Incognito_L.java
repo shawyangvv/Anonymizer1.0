@@ -1,9 +1,9 @@
 package incognito;
 
-import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import java.sql.ResultSet;
 import databasewrapper.QueryResult;
 import databasewrapper.SqLiteWrapper;
 
@@ -64,6 +64,7 @@ public class Incognito_L extends Anonymizer {
         return eqTable.insertTuple(vals);
     }
 
+
     protected void insertTupleToAnonTable(String[] vals, long eid) throws Exception{
         Configuration currConf=this.conf;
         double[] qiVals = new double[currConf.qidAtts.length];
@@ -117,8 +118,8 @@ public class Incognito_L extends Anonymizer {
         if(checkL(currAnonTable)) {
             man.setResult(true, currAnonTable, currEqTable);
         } else {
-            currAnonTable.drop();
-            currEqTable.drop();
+//            currAnonTable.drop();
+//            currEqTable.drop();
             man.setResult(false, null, null);
         }
     }

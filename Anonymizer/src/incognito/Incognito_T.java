@@ -5,7 +5,10 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+import java.sql.ResultSet;
+import databasewrapper.QueryResult;
 import databasewrapper.SqLiteWrapper;
+
 import anonymizer.AnonRecordTable;
 import anonymizer.Anonymizer;
 import anonymizer.Configuration;
@@ -79,7 +82,6 @@ public class Incognito_T extends Anonymizer {
     protected void insertTupleToAnonTable(String[] vals, long eid) throws Exception{
         Configuration currConf=this.conf;
         double[] qiVals = anonTable.parseQiValue(vals, currConf);
-
         String sensitiveValue = vals[conf.sensitiveAtts[0].index];
         double[] sensVals = new double[1];
         if(conf.sensitiveAtts[0].catMapInt != null) {
@@ -120,15 +122,16 @@ public class Incognito_T extends Anonymizer {
         System.out.println("Start to create anon_" + currRoot.toString() + " Table");
         AnonRecordTable currAnonTable = createAnonRecordsTable("anon_" + currRoot.toString());
 
-        EquivalenceTable oldEqTable = eqTable;
-        AnonRecordTable oldAnonTable = anonTable;
+        EquivalenceTable oldEqTable = this.eqTable;
+        AnonRecordTable oldAnonTable = this.anonTable;
 
-        currAnonTable = man.generalizeVals(currRoot, conf, currEqTable, currAnonTable, oldEqTable, oldAnonTable);
+      currAnonTable = man.generalizeVals(currRoot, conf, currEqTable, currAnonTable, oldEqTable, oldAnonTable);
+
         if(checkT(currAnonTable)) {
             man.setResult(true, currAnonTable, currEqTable);
         } else {
-            currAnonTable.drop();
-            currEqTable.drop();
+//            currAnonTable.drop();
+//            currEqTable.drop();
             man.setResult(false, null, null);
         }
     }

@@ -253,7 +253,6 @@ public class QIDAttribute {
                 double doubleVal = catMapInt.get(key);
                 String parent = "[" + doubleVal + "]";
                 while((parent = findGeneralization(parent)) != null) {
-                    //seq.add(parent);
                     if(parent.compareTo(suppValue) == 0) {
                         break;
                     }
