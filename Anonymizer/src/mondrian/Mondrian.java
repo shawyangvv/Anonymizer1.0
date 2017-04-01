@@ -66,7 +66,10 @@ public class Mondrian extends Anonymizer{
         int numUnprocessedEqs = 1;
         while(numUnprocessedEqs > 0) {
             String getEID_SQL = "SELECT EID FROM " + eqTable.getName();
-            long eid = ((ResultSet) databaseWrapper.executeQuery(getEID_SQL).next()).getLong(1);
+            QueryResult result = databaseWrapper.executeQuery(getEID_SQL);
+            Long eid = ((ResultSet) result.next()).getLong(1);
+            result.__close();
+           // long eid = ((ResultSet) databaseWrapper.executeQuery(getEID_SQL).next()).getLong(1);
 
             String[] genVals = eqTable.getGeneralization(eid);
             String currentGenVals = genVals[0];
@@ -123,8 +126,8 @@ public class Mondrian extends Anonymizer{
         if(!readyRecords.checkKAnonymity(conf.k)) {
             throw new Exception("This table cannot be anonymized at k = " + conf.k);
         } else {
-//            this.anonTable.drop();
-//            this.eqTable.drop();
+            this.anonTable.drop();
+            this.eqTable.drop();
             this.anonTable = readyRecords;
             this.eqTable = readyEqs;
         }
@@ -165,16 +168,18 @@ public class Mondrian extends Anonymizer{
         while(result.hasNext()) {
             ResultSet rs = (ResultSet) result.next();
             currSize += rs.getInt(2);
-
             if(currSize >= oldSize / 2) {
                 mid = rs.getDouble(1);
+                result.__close();
                 break;
             }
         }
 
         if(currSize >= conf.k && (oldSize - currSize) >= conf.k) {
+            result.__close();
             return mid;
         } else {
+            result.__close();
             return null;
         }
     }

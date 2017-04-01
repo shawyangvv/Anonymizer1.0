@@ -127,14 +127,15 @@ public class AnonRecordTable {
         int sumForSupp = 0;
         while(result.hasNext()) {
             Integer min = ((ResultSet) result.next()).getInt(1);
-            result.__close();
             if(min > 0 && min < k) {
                 sumForSupp += min;
                 if(sumForSupp > suppThreshold) {
+                    result.__close();
                     return false;
                 }
             }
         }
+        result.__close();
         return true;
     }
 

@@ -124,7 +124,6 @@ public abstract class Anonymizer {
 
             if(conf.kidAtts != null) {
                 ListIterator<Integer> iter = conf.kidAtts.listIterator();
-
                 while(iter.hasNext()) {
                     int i = iter.next();
                     long salt = System.currentTimeMillis();
@@ -160,18 +159,21 @@ public abstract class Anonymizer {
         QueryResult result = databaseWrapper.executeQuery(select_SQL);
         while(result.hasNext()) {
             ResultSet rs = (ResultSet) result.next();
-            result.__close();
+
             Integer currSize = rs.getInt(2);
             if(currSize < conf.k) {
                 equivalenceForSuppress.add(rs.getLong(1));
                 suppressionSize += currSize;
                 if(suppressionThreshold > 0 && suppressionSize > suppressionThreshold) {
+                    result.__close();
                     return null;
                 }
             } else {
+                result.__close();
                 return equivalenceForSuppress;
             }
         }
+        result.__close();
         return equivalenceForSuppress;
     }
 

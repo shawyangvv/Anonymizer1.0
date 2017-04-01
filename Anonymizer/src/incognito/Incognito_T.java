@@ -145,17 +145,7 @@ public class Incognito_T extends Anonymizer {
         LinkedList<Long> suppressionList = null;
 
         System.out.println(anons.size() +" nodes satisfy t-closeness requirement");
-        //GraphNode selection = man.nextNode();
-        //selection = selection.chooseNode(anons);
 
-//        if(selection == null) {
-//            throw new Exception("No anonymous generalizations!");
-//        } else {
-//            eqTable = selection.eqTable;
-//            anonTable = selection.anonTable;
-//            System.out.println("Selection: " + selection.toString());
-//        }
-//    }
         ListIterator<GraphNode> iter = anons.listIterator();
         while(iter.hasNext()) {
             try {
@@ -182,7 +172,6 @@ public class Incognito_T extends Anonymizer {
         if(selection == null) {
             throw new Exception("No anonymous generalizations!!!");
         } else {
-            //if necessary, drop the original tables
             for(int i = 0; i < conf.qidAtts.length; i++) {
                 if(selection.getHierarchy(i) != 0) {
                     eqTable.drop();
@@ -190,7 +179,7 @@ public class Incognito_T extends Anonymizer {
                     break;
                 }
             }
-            //set the choice
+
             eqTable = selection.eqTable;
             anonTable = selection.anonTable;
 

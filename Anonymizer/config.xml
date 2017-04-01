@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<config method = 'Incognito_T' k = '10' l="10" t="0.2">
+<config method = 'Mondrian' k = '10' l="10" t="0.2">
 	<input filename='dataset/Test.csv' separator=','/>
 	<output filename='Test_Anon.csv'/>
 	<sqlitefile path='dbdir/Anonymizer.db'/>
