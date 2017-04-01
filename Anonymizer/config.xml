@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<config method = 'Incognito_L' k = '10' l="10" t="0.2">
+<config method = 'Incognito_T' k = '10' l="10" t="0.2">
 	<input filename='dataset/Test.csv' separator=','/>
 	<output filename='Test_Anon.csv'/>
 	<sqlitefile path='dbdir/Anonymizer.db'/>
@@ -12,7 +12,7 @@
 		<att index="5" name="Birth date"/>
 	</kid>
 	<qid>
-		<att index='3' name='sex'>
+		<att index='3' name='gender'>
 			<map>
 				<entry cat='Female' int='0' />
 				<entry cat='Male' int='1' />
@@ -20,8 +20,6 @@
 			<vgh value='[0:1]'>
 			</vgh>
 		</att>
-
-
 		<att index='6' name ='Age'>
 			<vgh value='[0:120)'>
 				<node value='[0:60)'>
@@ -79,10 +77,34 @@
 
 	<sens>
 		<att index='7' name='Diagnosis'>
-			<!--<map>-->
-				<!--<entry cat='-_50000.' int='1' />-->
-				<!--<entry cat='50000+.' int='2' />-->
-			<!--</map>-->
+			<map>
+				<entry cat="A3790" int="1"/>
+				<entry cat="B2701" int="2"/>
+				<entry cat="C4490" int="3"/>
+				<entry cat="D3130" int="4"/>
+				<entry cat="E1037" int="5"/>
+				<entry cat="F1123" int="6"/>
+				<entry cat="G4021" int="7"/>
+				<entry cat="H0242" int="8"/>
+				<entry cat="I7021" int="9"/>
+				<entry cat="J9509" int="10"/>
+				<entry cat="K5530" int="11"/>
+				<entry cat="L2082" int="12"/>
+				<entry cat="M0847" int="13"/>
+				<entry cat="N6089" int="14"/>
+				<entry cat="O0989" int="15"/>
+				<entry cat="P0822" int="16"/>
+				<entry cat="Q7181" int="17"/>
+				<entry cat="R1934" int="18"/>
+				<entry cat="S0047" int="19"/>
+				<entry cat="T2117" int="20"/>
+				<entry cat="V0401" int="21"/>
+				<entry cat="W1130" int="22"/>
+				<entry cat="X9647" int="23"/>
+				<entry cat="Y0703" int="24"/>
+				<entry cat="Z8559" int="25"/>
+			</map>
 		</att>
 	</sens>
 </config>
+

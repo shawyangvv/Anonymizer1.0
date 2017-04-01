@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import databasewrapper.SqLiteWrapper;
 
 public class QueryResult implements Iterator{
     private String query;
@@ -21,9 +22,13 @@ public class QueryResult implements Iterator{
     private int numberOfPages;
     private boolean pageLoaded = false;
 
+    private Statement __statement  = null;
+
     public QueryResult(Statement stat, String sql) throws SQLException{
         this.query = sql;
         this.stat = stat;
+
+
 
         ResultSet rs = stat.executeQuery("select count(*) as recordCount from ( " + sql + " )");
         if(rs.next())
@@ -34,7 +39,7 @@ public class QueryResult implements Iterator{
     public boolean hasNext() {
         if(currentRecordId>= recordSum) {
             try {
-                stat.close();
+//                stat.close();
                 if(currentPage != null)
                     currentPage.close();
             } catch(SQLException e) {
@@ -86,9 +91,11 @@ public class QueryResult implements Iterator{
             } else {
                 pageQuery = query + " limit " + (endIndex- startIndex)+ " offset " +  startIndex;
             }
-
-            currentPage = stat.executeQuery(pageQuery);
-
+            if(__statement != null && !__statement.isClosed()){
+                __statement.close();
+            }
+            __statement = SqLiteWrapper.getInstance().__getConnection().createStatement();
+            currentPage = __statement.executeQuery(pageQuery);
             if (numCols == 0) {
                 ResultSetMetaData rsmd = currentPage.getMetaData();
                 numCols = rsmd.getColumnCount();
@@ -106,5 +113,10 @@ public class QueryResult implements Iterator{
     }
 
     public void remove() {
+    }
+
+    public void __close() throws SQLException {
+        if (__statement != null && ! __statement.isClosed())
+             __statement.close();
     }
 }

@@ -50,7 +50,9 @@ public class EquivalenceTable {
         QueryResult result = databaseWrapper.executeQuery(select_SQL);
 
         if(result.hasNext()) {
-            return ((ResultSet) result.next()).getLong(1);
+            long __result = ((ResultSet) result.next()).getLong(1);
+            result.__close();
+            return __result;
         } else {
             return new Long(-1);
         }
@@ -66,8 +68,12 @@ public class EquivalenceTable {
             for(int i = 0; i < retVal.length; i++) {
                 retVal[i] = rs.getString(i+2);
             }
+            result.__close();
+
             return retVal;
         } else {
+            result.__close();
+
             return null;
         }
     }
@@ -105,6 +111,7 @@ public class EquivalenceTable {
         QueryResult result = databaseWrapper.executeQuery(select_SQL);
         if(result.hasNext()) {
             eid = ((ResultSet) result.next()).getLong(1);
+            result.__close();
             eid++;
         }
         String insert_SQL = "INSERT INTO " + tableName + " VALUES ( " + eid.toString() + ", ";

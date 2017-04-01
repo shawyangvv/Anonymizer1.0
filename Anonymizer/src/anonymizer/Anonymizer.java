@@ -64,6 +64,7 @@ public abstract class Anonymizer {
         }
 
         System.out.println("read in "+ count +" records");
+
         input.close();
     }
 
@@ -101,6 +102,7 @@ public abstract class Anonymizer {
             String getEIDforRID  = "SELECT EID FROM " + anonTable.getName() + " WHERE RID = " + rid;
             QueryResult result = databaseWrapper.executeQuery(getEIDforRID);
             Long eid = ((ResultSet) result.next()).getLong(1);
+            result.__close();
             rid++;
 
             String[] genVals = eqTable.getGeneralization(eid);
@@ -158,6 +160,7 @@ public abstract class Anonymizer {
         QueryResult result = databaseWrapper.executeQuery(select_SQL);
         while(result.hasNext()) {
             ResultSet rs = (ResultSet) result.next();
+            result.__close();
             Integer currSize = rs.getInt(2);
             if(currSize < conf.k) {
                 equivalenceForSuppress.add(rs.getLong(1));

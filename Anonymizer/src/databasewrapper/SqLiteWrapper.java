@@ -72,7 +72,7 @@ public class SqLiteWrapper implements DatabaseWrapper{
         Statement stat = null;
         try{
             stat=sqLiteInstance.conn.createStatement();
-            stat.execute(sql);
+            stat.executeUpdate(sql);
             stat.close();
             commit();
             return true;
@@ -87,7 +87,7 @@ public class SqLiteWrapper implements DatabaseWrapper{
         try {
             Statement stmt=sqLiteInstance.conn.createStatement();
             result=new QueryResult(stmt, sql);
-            sqLiteInstance.commit();
+            commit();
             stmt.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,6 +133,10 @@ public class SqLiteWrapper implements DatabaseWrapper{
 
         conn = DriverManager.getConnection( sqLiteInstance.jdbc + "/" + sqLiteInstance.dbPath +"/" +sqLiteInstance.dbName , "", "" );
         conn.setAutoCommit(false);
+        return conn;
+    }
+
+    public Connection __getConnection(){
         return conn;
     }
 

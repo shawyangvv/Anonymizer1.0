@@ -27,7 +27,16 @@ public class AnonRecordTable {
     }
 
     private void createTable() {
-        String createTable_SQL = "CREATE TABLE IF NOT EXISTS " + tableName +
+        String check_SQL = "SELECT NAME FROM SQLITE_MASTER WHERE NAME = '" + tableName + "'";
+//        QueryResult result = databaseWrapper.executeQuery(check_SQL);
+//        if(result.hasNext()) {
+        if(true) {
+            String drop_SQL = "DROP TABLE if exists " + tableName;
+            databaseWrapper.executeInsert(drop_SQL);
+
+        }
+
+        String createTable_SQL = "CREATE TABLE " + tableName +
                 " (RID BIGINT PRIMARY KEY," +
                 " EID BIGINT, ";
         for(int i = 0; i < qidIndices.length; i++) {
@@ -39,6 +48,7 @@ public class AnonRecordTable {
         createTable_SQL = createTable_SQL.substring(0, createTable_SQL.length() - 2);
         createTable_SQL += ")";
         databaseWrapper.execute(createTable_SQL);
+        //databaseWrapper.commit();
     }
 
     public String getName() {
@@ -49,7 +59,9 @@ public class AnonRecordTable {
         String select_SQL = "SELECT COUNT(*) FROM " + tableName + " WHERE EID = " + Long.toString(eid);
         QueryResult result = databaseWrapper.executeQuery(select_SQL);
         if(result.hasNext()) {
-            return ((ResultSet) result.next()).getInt(1);
+            int temp = ((ResultSet) result.next()).getInt(1);
+            result.__close();
+            return temp;
         } else {
             return 0;
         }
@@ -73,6 +85,7 @@ public class AnonRecordTable {
         QueryResult result = databaseWrapper.executeQuery(select_SQL);
         if(result.hasNext()) {
             rid = ((ResultSet) result.next()).getLong(1);
+            result.__close();
             rid++;
         }
 
@@ -95,6 +108,7 @@ public class AnonRecordTable {
         QueryResult result = databaseWrapper.executeQuery(select_SQL);
         while(result.hasNext()) {
             Integer min = ((ResultSet) result.next()).getInt(1);
+            result.__close();
             System.out.println(min);
             if(min > 0 && min < k) {
                 return false;
@@ -113,6 +127,7 @@ public class AnonRecordTable {
         int sumForSupp = 0;
         while(result.hasNext()) {
             Integer min = ((ResultSet) result.next()).getInt(1);
+            result.__close();
             if(min > 0 && min < k) {
                 sumForSupp += min;
                 if(sumForSupp > suppThreshold) {
@@ -137,6 +152,7 @@ public class AnonRecordTable {
 
         while(result.hasNext()) {
             ResultSet rs = (ResultSet) result.next();
+            result.__close();
             currEID = rs.getLong(2);
             currSensNum = rs.getInt(1);
 
@@ -195,6 +211,7 @@ public class AnonRecordTable {
             if(currEID != prevEID) {
                 if(counts != null) {
                     if(counts.size() < l) {
+                        result.__close();
                         return false;
                     } else {
                         Integer[] countVals = counts.toArray(new Integer[0]);
@@ -205,6 +222,7 @@ public class AnonRecordTable {
                             sum += countVals[i];
                         }
                         if(r_1 >= c * sum) {
+                            result.__close();
                             return false;
                         }
                     }
@@ -214,7 +232,7 @@ public class AnonRecordTable {
             }
             counts.add(currSensNum);
         }
-
+        result.__close();
         if(counts != null && counts.size() >= 1) {
             Integer[] lastVals = counts.toArray(new Integer[0]);
             Arrays.sort(lastVals);
@@ -251,7 +269,7 @@ public class AnonRecordTable {
             entireDist[(int) rs.getDouble(2)] = rs.getInt(1);
             entireSize += rs.getInt(1);
         }
-
+        result.__close();
         long prevEID = -1;
         int[] currDist = null;
         String iterEqs_SQL = "SELECT EID, COUNT(*), ATT_" + sensIndex
@@ -274,6 +292,7 @@ public class AnonRecordTable {
                     }
                     sum /= 2;
                     if(sum > t) {
+                        result.__close();
                         return false;
                     }
                 }
@@ -286,7 +305,7 @@ public class AnonRecordTable {
             }
             currDist[attVal] = count;
         }
-
+        //result.__close();
         if(currDist!= null && prevEID != -1) {
             double sum = 0;
             double eqSize = getEqSize(prevEID);
@@ -295,9 +314,11 @@ public class AnonRecordTable {
             }
             sum /= 2;
             if(sum > t) {
+                result.__close();
                 return false;
             }
         }
+        result.__close();
         return true;
     }
 
@@ -310,17 +331,19 @@ public class AnonRecordTable {
         double entireSize = 0;
         while(result.hasNext()) {
             ResultSet rs = (ResultSet) result.next();
+            result.__close();
             Double[] entry = new Double[2];
             entry[0] = rs.getDouble(2);
             entry[1] = new Double(rs.getInt(1));
             entireCounts.add(entry);
             entireSize += entry[1];
         }
-
+        result.__close();
         String iterEqs_SQL = "SELECT DISTINCT(EID) FROM " + tableName;
         result = databaseWrapper.executeQuery(iterEqs_SQL);
         while(result.hasNext()) {
             long eid = ((ResultSet) result.next()).getLong(1);
+            result.__close();
             double eqSize = getEqSize(eid);
 
             getDist_SQL = "SELECT COUNT(*), ATT_" + sensIndex
@@ -339,6 +362,7 @@ public class AnonRecordTable {
             while(subResult.hasNext()) {
                 Double[] tableCurr = iter.next();
                 ResultSet srs = (ResultSet) subResult.next();
+                subResult.__close();
                 Double eqCurr = srs.getDouble(2);
                 int eqCount = srs.getInt(1);
 
@@ -346,6 +370,7 @@ public class AnonRecordTable {
                     double r_i = tableCurr[1] / entireSize;
                     sumNoAbsolute += r_i;
                     if(sumDist > boundary) {
+                        result.__close();
                         return false;
                     }
                     sumDist += Math.abs(sumNoAbsolute);
@@ -354,6 +379,7 @@ public class AnonRecordTable {
                 double r_i = tableCurr[1] / entireSize - eqCount / eqSize;
                 sumNoAbsolute += r_i;
                 if(sumDist > boundary) {
+                    result.__close();
                     return false;
                 }
                 sumDist += Math.abs(sumNoAbsolute);
@@ -362,11 +388,13 @@ public class AnonRecordTable {
                 double r_i = iter.next()[1] / entireSize;
                 sumNoAbsolute += r_i;
                 if(sumDist > boundary) {
+                    result.__close();
                     return false;
                 }
                 sumDist += Math.abs(sumNoAbsolute);
             }
         }
+        result.__close();
         return true;
     }
 
@@ -384,8 +412,7 @@ public class AnonRecordTable {
             insert_SQL += ", ATT_" + sensIndices[i];
         }
         insert_SQL += " FROM " + oldAnon.getName() + " WHERE EID = " + oldEID;
-        databaseWrapper.executeInsert(insert_SQL);
-
+        databaseWrapper.execute(insert_SQL);
     }
 
     public void getCut(AnonRecordTable oldAnon, Long oldEID, Long newEID) {
@@ -398,9 +425,11 @@ public class AnonRecordTable {
         }
         insert_SQL += " FROM " + oldAnon.getName() + " WHERE EID = " + oldEID;
         databaseWrapper.execute(insert_SQL);
+        //databaseWrapper.commit();
 
         String delete_SQL = "DELETE FROM " + oldAnon.tableName + " WHERE EID = " + oldEID;
         databaseWrapper.execute(delete_SQL);
+        //databaseWrapper.commit();
     }
 
 

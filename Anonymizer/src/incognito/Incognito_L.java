@@ -118,8 +118,8 @@ public class Incognito_L extends Anonymizer {
         if(checkL(currAnonTable)) {
             man.setResult(true, currAnonTable, currEqTable);
         } else {
-//            currAnonTable.drop();
-//            currEqTable.drop();
+            currAnonTable.drop();
+            currEqTable.drop();
             man.setResult(false, null, null);
         }
     }
