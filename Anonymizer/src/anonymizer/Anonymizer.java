@@ -11,7 +11,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -64,7 +63,6 @@ public abstract class Anonymizer {
         }
 
         System.out.println("read in "+ count +" records");
-
         input.close();
     }
 
@@ -146,8 +144,8 @@ public abstract class Anonymizer {
             output.write(line);
         }
         output.close();
-//        this.anonTable.drop();
-//        this.eqTable.drop();
+        this.anonTable.drop();
+        this.eqTable.drop();
         this.databaseWrapper.flush();
     }
 

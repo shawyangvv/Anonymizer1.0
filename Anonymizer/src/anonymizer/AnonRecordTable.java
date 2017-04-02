@@ -28,12 +28,10 @@ public class AnonRecordTable {
 
     private void createTable() {
         String check_SQL = "SELECT NAME FROM SQLITE_MASTER WHERE NAME = '" + tableName + "'";
-//        QueryResult result = databaseWrapper.executeQuery(check_SQL);
-//        if(result.hasNext()) {
-        if(true) {
+        QueryResult result = databaseWrapper.executeQuery(check_SQL);
+       if(result.hasNext()) {
             String drop_SQL = "DROP TABLE if exists " + tableName;
             databaseWrapper.executeInsert(drop_SQL);
-
         }
 
         String createTable_SQL = "CREATE TABLE " + tableName +

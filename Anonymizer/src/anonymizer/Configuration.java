@@ -41,7 +41,7 @@ public class Configuration {
         this.configFilename = configFile;
         File f = new File(configFilename);
         if(!f.exists()) {
-            throw new Exception("Configuration file " + configFilename + " does not exist!!!");
+            throw new Exception("Configuration file " + configFilename + " does not exist!");
         }
 
         inputFilename = null;
@@ -124,6 +124,7 @@ public class Configuration {
                         String attName = nodeAtts.item(j).getNodeName();
                         if(attName.equals("filename")) {
                             setOutputFilename(nodeAtts.item(j).getNodeValue());
+                            //System.out.println(nodeAtts.item(j).getNodeValue());
                         }
                     }
                 } else if (child.getNodeName().equals("sqlitefile")){
@@ -211,6 +212,12 @@ public class Configuration {
     }
 
     public void setOutputFilename(String filename) throws Exception {
+        File outputFile = new File(filename);
+        File theDirectory = outputFile.getParentFile();
+        if (theDirectory != null) {
+            theDirectory.mkdirs();
+        }
+
         outputFilename = filename;
     }
 

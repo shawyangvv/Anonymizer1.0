@@ -69,7 +69,6 @@ public class Mondrian extends Anonymizer{
             QueryResult result = databaseWrapper.executeQuery(getEID_SQL);
             Long eid = ((ResultSet) result.next()).getLong(1);
             result.__close();
-           // long eid = ((ResultSet) databaseWrapper.executeQuery(getEID_SQL).next()).getLong(1);
 
             String[] genVals = eqTable.getGeneralization(eid);
             String currentGenVals = genVals[0];

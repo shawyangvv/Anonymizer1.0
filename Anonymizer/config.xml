@@ -2,7 +2,7 @@
 
 <config method = 'Mondrian' k = '10' l="10" t="0.2">
 	<input filename='dataset/Test.csv' separator=','/>
-	<output filename='Test_Anon.csv'/>
+	<output filename='test/Test_Anon.csv'/>
 	<sqlitefile path='dbdir/Anonymizer.db'/>
 
 	<kid>
