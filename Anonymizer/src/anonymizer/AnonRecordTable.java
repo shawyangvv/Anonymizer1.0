@@ -30,7 +30,7 @@ public class AnonRecordTable {
         String check_SQL = "SELECT NAME FROM SQLITE_MASTER WHERE NAME = '" + tableName + "'";
         QueryResult result = databaseWrapper.executeQuery(check_SQL);
        if(result.hasNext()) {
-            String drop_SQL = "DROP TABLE if exists " + tableName;
+            String drop_SQL = "DROP TABLE " + tableName;
             databaseWrapper.executeInsert(drop_SQL);
         }
 
@@ -46,7 +46,6 @@ public class AnonRecordTable {
         createTable_SQL = createTable_SQL.substring(0, createTable_SQL.length() - 2);
         createTable_SQL += ")";
         databaseWrapper.execute(createTable_SQL);
-        //databaseWrapper.commit();
     }
 
     public String getName() {
@@ -245,7 +244,6 @@ public class AnonRecordTable {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -304,7 +302,6 @@ public class AnonRecordTable {
             }
             currDist[attVal] = count;
         }
-        //result.__close();
         if(currDist!= null && prevEID != -1) {
             double sum = 0;
             double eqSize = getEqSize(prevEID);
@@ -424,26 +421,8 @@ public class AnonRecordTable {
         }
         insert_SQL += " FROM " + oldAnon.getName() + " WHERE EID = " + oldEID;
         databaseWrapper.execute(insert_SQL);
-        //databaseWrapper.commit();
 
         String delete_SQL = "DELETE FROM " + oldAnon.tableName + " WHERE EID = " + oldEID;
-        databaseWrapper.execute(delete_SQL);
-        //databaseWrapper.commit();
-    }
-
-
-    public void renewRecord(AnonRecordTable that, Long RID, Long newEID) {
-        String insert_SQL = "INSERT INTO " + tableName + " SELECT RID, " + newEID;
-        for(int i = 0; i < qidIndices.length; i++) {
-            insert_SQL += ", ATT_" + qidIndices[i];
-        }
-        for(int i = 0; i < sensIndices.length; i++) {
-            insert_SQL += ", ATT_" + sensIndices[i];
-        }
-        insert_SQL += " FROM " + that.tableName + " WHERE RID = " + RID;
-        databaseWrapper.execute(insert_SQL);
-
-        String delete_SQL = "DELETE FROM " + that.tableName + " WHERE RID = " + RID;
         databaseWrapper.execute(delete_SQL);
     }
 

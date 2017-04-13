@@ -73,19 +73,8 @@ public class EquivalenceTable {
             return retVal;
         } else {
             result.__close();
-
             return null;
         }
-    }
-
-    public void updateGeneralization(double eid, String[] newVals) throws SQLException {
-        String update_SQL = "UPDATE " + tableName + " SET ";
-        update_SQL += "ATT_" + qid[0].index + " = '" + newVals[0] + "'";
-        for(int i = 1; i < qid.length; i++) {
-            update_SQL += ", ATT_" + qid[i].index + " = '" + newVals[i] + "'";
-        }
-        update_SQL += " WHERE EID = " + eid;
-        databaseWrapper.execute(update_SQL);
     }
 
     public Long insertTuple(String[] vals) throws Exception {

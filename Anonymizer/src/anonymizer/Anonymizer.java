@@ -20,7 +20,8 @@ import databasewrapper.QueryResult;
 import databasewrapper.DatabaseWrapper;
 
 
-public abstract class Anonymizer {
+public abstract class Anonymizer {;
+    static int result_RID = 0;
     protected DatabaseWrapper databaseWrapper;
 
     protected Configuration conf;
@@ -67,6 +68,7 @@ public abstract class Anonymizer {
     }
 
     public void outputResults() throws Exception{
+
         FileWriter fw = new FileWriter(conf.outputFilename);
         BufferedWriter output = new BufferedWriter(fw);
 
@@ -98,8 +100,18 @@ public abstract class Anonymizer {
             }
             String[] vals = inputline.split(conf.separator);
             String getEIDforRID  = "SELECT EID FROM " + anonTable.getName() + " WHERE RID = " + rid;
+
             QueryResult result = databaseWrapper.executeQuery(getEIDforRID);
-            Long eid = ((ResultSet) result.next()).getLong(1);
+            Long eid = null;
+            result_RID ++;
+            if (result.hasNext())
+            {
+                eid = ((ResultSet) result.next()).getLong(1);
+            }
+            else {
+                System.out.println("RID ="+ result_RID + " has NULL value in its records!");
+            }
+
             result.__close();
             rid++;
 
@@ -108,7 +120,7 @@ public abstract class Anonymizer {
             String connCat="";
             for(int i = 0; i < conf.qidAtts.length; i++) {
                 if (conf.qidAtts[i].catMapInt!=null){
-                    String orign=vals[conf.qidAtts[i].index].toString();
+                    String orign = vals[conf.qidAtts[i].index];
                     orignalCat=conf.qidAtts[i].mapBack(orign);
                     for (int j = 0; j <orignalCat.length; j++){
                         connCat += orignalCat[j] + ",";
@@ -144,9 +156,9 @@ public abstract class Anonymizer {
             output.write(line);
         }
         output.close();
-        this.anonTable.drop();
-        this.eqTable.drop();
-        this.databaseWrapper.flush();
+//        this.anonTable.drop();
+//        this.eqTable.drop();
+//        this.databaseWrapper.flush();
     }
 
     public LinkedList<Long> checkSuppression(String anonRecordTable) throws Exception{

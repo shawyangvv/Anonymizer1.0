@@ -126,8 +126,34 @@ public class Incognito_L extends Anonymizer {
 
     private void selectAnonymization(LinkedList<GraphNode> anons) throws Exception{
         System.out.println(anons.size() +" nodes satisfy l-diversity requirement");
-        GraphNode selection = man.nextNode();
-        selection = selection.chooseNode(anons);
+        int numEquivalences = 0;
+        GraphNode selection = null;
+        ListIterator <GraphNode> iter = anons.listIterator();
+        while(iter.hasNext()) {
+            try {
+                GraphNode root = iter.next();
+                System.out.println(root.toString());
+
+                String count_SQL = "SELECT COUNT(*) FROM " + root.eqTable.getName();
+                QueryResult result = databaseWrapper.executeQuery(count_SQL);
+                int currNumEqs = 0;
+                if (result.hasNext())
+                {
+                    currNumEqs = ((ResultSet) result.next()).getInt(1);
+                }
+                //int currNumEqs = ((ResultSet) result.next()).getInt(1);
+                result.__close();
+                if(currNumEqs > numEquivalences) {
+                    selection = root;
+                    numEquivalences = currNumEqs;
+                } else {
+                    root.anonTable.drop();
+                    root.eqTable.drop();
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         if(selection == null) {
             throw new Exception("No satisfied anonymous generalizations of Incognito_L.");

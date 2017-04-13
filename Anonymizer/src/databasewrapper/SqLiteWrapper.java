@@ -20,7 +20,6 @@ public class SqLiteWrapper implements DatabaseWrapper{
 
     private static SqLiteWrapper sqLiteInstance = null;
 
-
     private SqLiteWrapper() {}
 
     public static void initialize(Configuration conf){

@@ -33,7 +33,7 @@ public class Datafly extends Anonymizer{
 
         databaseWrapper = SqLiteWrapper.getInstance();
         eqTable = createEquivalenceTable("eq_" + eqTableIndex);
-        anonTable = createAnonRecordsTable("an_" + anonTableIndex);
+        anonTable = createAnonRecordsTable("anon_" + anonTableIndex);
     }
 
     protected EquivalenceTable createEquivalenceTable(String tableName) {

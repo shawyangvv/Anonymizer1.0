@@ -2,10 +2,8 @@ package incognito;
 
 import java.sql.ResultSet;
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 import anonymizer.AnonRecordTable;
-import anonymizer.Anonymizer;
 import anonymizer.Configuration;
 import anonymizer.EquivalenceTable;
 import databasewrapper.DatabaseWrapper;
@@ -18,8 +16,10 @@ public class HierarchyGraph {
     private int nextNodeIndex = 0;
     private GraphNode prevNode;
     private LinkedList<GraphNode> satisfiedNodes;
+
     protected EquivalenceTable eqTable;
     protected AnonRecordTable anonTable;
+
     protected DatabaseWrapper databaseWrapper;
 
     public HierarchyGraph(GraphNode superRoot, int[] qiHierarchies) {
@@ -105,8 +105,4 @@ public class HierarchyGraph {
         }
         return currAnonTable;
     }
-
-
-
-
 }

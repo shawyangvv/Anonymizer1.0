@@ -120,6 +120,7 @@ public class Incognito_K extends Anonymizer {
                 String count_SQL = "SELECT COUNT(*) FROM " + currRoot.eqTable.getName();
                 QueryResult result = databaseWrapper.executeQuery(count_SQL);
                 int currEqNum = ((ResultSet) result.next()).getInt(1);
+                result.__close();
                 suppressionList = checkSuppression(currRoot.anonTable.getName());
                 currEqNum -= suppressionList.size();
 

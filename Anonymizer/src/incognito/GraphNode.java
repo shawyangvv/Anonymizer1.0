@@ -76,30 +76,4 @@ public class GraphNode {
         return retVal;
     }
 
-    protected GraphNode chooseNode(LinkedList<GraphNode> anonsNodes){
-        int numEquivalences = 0;
-        databaseWrapper = SqLiteWrapper.getInstance();
-        GraphNode selection = null;
-        ListIterator<GraphNode> candidates = anonsNodes.listIterator();
-        while(candidates.hasNext()) {
-            try {
-                GraphNode root = candidates.next();
-                System.out.println(root.toString());
-                String count_SQL = "SELECT COUNT(*) FROM " + root.eqTable.getName();
-                QueryResult result = databaseWrapper.executeQuery(count_SQL);
-                int currEqNums = ((ResultSet) result.next()).getInt(1);
-
-                if(currEqNums > numEquivalences) {
-                    selection = root;
-                    numEquivalences = currEqNums;
-//                } else {
-//                    root.anonTable.drop();
-//                    root.eqTable.drop();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return selection;
-    }
 }

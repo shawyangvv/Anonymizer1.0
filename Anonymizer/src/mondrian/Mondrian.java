@@ -55,7 +55,6 @@ public class Mondrian extends Anonymizer{
     protected void insertTupleToAnonTable(String[] vals, long eid) throws Exception{
         Configuration currConf=this.conf;
         double[] qiVals = anonTable.parseQiValue(vals, currConf);
-
         anonTable.insert(eid, qiVals, new double[0]);
     }
 
@@ -116,7 +115,6 @@ public class Mondrian extends Anonymizer{
                 long newEid = readyEqs.insertEquivalence(genVals);
                 readyRecords.getCut(anonTable, eid, newEid);
                 eqTable.deleteEquivalence(eid);
-
                 numUnprocessedEqs --;
                 System.out.println("Record " + eid + " has no allowable cuts");
             }
@@ -143,7 +141,6 @@ public class Mondrian extends Anonymizer{
         if(currWidth == 0 && currRange.singleton()) {
             currWidth = 1;
         }
-
         return currWidth / entireWidth;
     }
 

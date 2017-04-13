@@ -190,7 +190,7 @@ public class QIDAttribute {
         return null;
     }
 
-    public String[] specialize(String value) throws Exception{
+    public String[] getLeavesValue(String value) throws Exception{
         String[] children = childLookup.get(value);
         if(children != null) {
             return children;
@@ -211,7 +211,7 @@ public class QIDAttribute {
             } else if(intrvl.incType == Interval.TYPE_IncLowExcHigh) {
                 specs.removeLast();
             } else {
-                if(intrvl.low == intrvl.high) { //e.g., [3,3]
+                if(intrvl.low == intrvl.high) {
                     specs.removeFirst();
                 }
             }

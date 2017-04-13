@@ -1,110 +1,139 @@
 <?xml version="1.0"?>
 
-<config method = 'Mondrian' k = '10' l="10" t="0.2">
-	<input filename='dataset/Test.csv' separator=','/>
-	<output filename='test/Test_Anon.csv'/>
-	<sqlitefile path='dbdir/Anonymizer.db'/>
+<config method = 'Incognito_L' k = '6' l="6" c="4" t="0.2">
+    <input filename='dataset/adult.csv' separator=','/>
+    <output filename='test/adult_Anon_IncoL6C4.csv'/>
+    <sqlitefile path='dbdir/Anon_adult_IncoL6C4.db'/>
 
-	<kid>
-		<att index='0' name='first_name'/>
-		<att index='1' name='last_name'/>
-		<att index="2" name="SSN"/>
-		<att index="5" name="Birth date"/>
-	</kid>
-	<qid>
-		<att index='3' name='gender'>
-			<map>
-				<entry cat='Female' int='0' />
-				<entry cat='Male' int='1' />
-			</map>
-			<vgh value='[0:1]'>
-			</vgh>
-		</att>
-		<att index='6' name ='Age'>
-			<vgh value='[0:120)'>
-				<node value='[0:60)'>
-					<node value='[0:30)'>
-						<node value="[0:15)"/>
-						<node value="[15:30)"/>
-					</node>
-					<node value='[30:60)'>
-						<node value="[30:45)"/>
-						<node value="[45:60)"/>
-					</node>
-
-				</node>
-				<node value='[60:120)'>
-					<node value='[60:90)'>
-						<node value="[60:75)"/>
-						<node value="[75:90)"/>
-					</node>
-
-					<node value='[90:120)'>
-						<node value="[90:105)"/>
-						<node value="[105:120)"/>
-					</node>
-
-				</node>
-			</vgh>
-		</att>
-		<att index='8' name='Total Charge'>
-			<vgh value='[0:100000)'>
-				<node value='[0:50000)'>
-					<node value='[0:25000)'>
-						<node value="[0:12500)"/>
-						<node value="[12500:25000)"/>
-					</node>
-
-					<node value='[25000:50000)'>
-						<node value="[25000:37500)"/>
-						<node value="[37500:50000)"/>
-					</node>
-
-				</node>
-				<node value='[50000:100000)'>
-					<node value='[50000:75000)'>
-						<node value="[50000:62500)"/>
-						<node value="[62500:75000)"/>
-					</node>
-					<node value='[75000:100000)'>
-						<node value="[75000:87500)"/>
-						<node value="[87500:100000)"/>
-					</node>
-				</node>
-			</vgh>
-		</att>
-	</qid>
-
-	<sens>
-		<att index='7' name='Diagnosis'>
-			<map>
-				<entry cat="A3790" int="1"/>
-				<entry cat="B2701" int="2"/>
-				<entry cat="C4490" int="3"/>
-				<entry cat="D3130" int="4"/>
-				<entry cat="E1037" int="5"/>
-				<entry cat="F1123" int="6"/>
-				<entry cat="G4021" int="7"/>
-				<entry cat="H0242" int="8"/>
-				<entry cat="I7021" int="9"/>
-				<entry cat="J9509" int="10"/>
-				<entry cat="K5530" int="11"/>
-				<entry cat="L2082" int="12"/>
-				<entry cat="M0847" int="13"/>
-				<entry cat="N6089" int="14"/>
-				<entry cat="O0989" int="15"/>
-				<entry cat="P0822" int="16"/>
-				<entry cat="Q7181" int="17"/>
-				<entry cat="R1934" int="18"/>
-				<entry cat="S0047" int="19"/>
-				<entry cat="T2117" int="20"/>
-				<entry cat="V0401" int="21"/>
-				<entry cat="W1130" int="22"/>
-				<entry cat="X9647" int="23"/>
-				<entry cat="Y0703" int="24"/>
-				<entry cat="Z8559" int="25"/>
-			</map>
-		</att>
-	</sens>
+    <qid>
+        <att index='0' name='Age'>
+            <vgh value="[15:95)">
+                <node value="[15:35)">
+                    <node value="[15:25)">
+                        <node value="[15:20)"/>
+                        <node value="[20:25)"/>
+                    </node>
+                    <node value="[25:35)">
+                        <node value="[25:30)"/>
+                        <node value="[30:35)"/>
+                    </node>
+                </node>
+                <node value="[35:55)">
+                    <node value="[35:45)">
+                        <node value="[35:40)"/>
+                        <node value="[40:45)"/>
+                    </node>
+                    <node value="[45:55)">
+                        <node value="[45:50)"/>
+                        <node value="[50:55)"/>
+                    </node>
+                </node>
+                <node value="[55:75)">
+                    <node value="[55:65)">
+                        <node value="[55:60)"/>
+                        <node value="[60:65)"/>
+                    </node>
+                    <node value="[65:75)">
+                        <node value="[65:70)"/>
+                        <node value="[70:75)"/>
+                    </node>
+                </node>
+                <node value="[75:95)">
+                    <node value="[75:85)">
+                        <node value="[75:80)"/>
+                        <node value="[80:85)"/>
+                    </node>
+                    <node value="[85:95)">
+                        <node value="[85:90)"/>
+                        <node value="[90:95)"/>
+                    </node>
+                </node>
+            </vgh>
+        </att>
+        <att index="8" name="Gender">
+            <map>
+                <entry cat='Female' int='0'/>
+                <entry cat='Male' int='1' />
+            </map>
+            <vgh value="[0:1]">
+            </vgh>
+        </att>
+        <att index="2" name="Education">
+            <map>
+                <entry cat="Preschool" int="0"/>
+                <entry cat="1st-4th" int="1"/>
+                <entry cat="5th-6th" int="2"/>
+                <entry cat="7th-8th" int="3"/>
+                <entry cat="9th" int="4"/>
+                <entry cat="10th" int="5"/>
+                <entry cat="11th" int="6"/>
+                <entry cat="12th" int="7"/>
+                <entry cat="HS-grad" int="8"/>
+                <entry cat="Prof-school" int="9"/>
+                <entry cat="Some-college" int="10"/>
+                <entry cat="Bachelors" int="11"/>
+                <entry cat="Masters" int="12"/>
+                <entry cat="Assoc-voc" int="13"/>
+                <entry cat="Assoc-acdm" int="14"/>
+                <entry cat="Doctorate" int="15"/>
+            </map>
+            <vgh value="[0:15]">
+                <node value="[0:10)">
+                    <node value="[0:3)"/>
+                    <node value="[3:6)"/>
+                    <node value="[6:10)"/>
+                </node>
+                <node value="[10:15]">
+                    <node value="[10:13)"/>
+                    <node value="[13:15]"/>
+                </node>
+            </vgh>
+        </att>
+        <att index="4" name="Marital-Status">
+            <map>
+                <entry cat="Married-AF-spouse" int="0"/>
+                <entry cat="Married-civ-spouse" int="1"/>
+                <entry cat="Married-spouse-absent" int="2"/>
+                <entry cat="Separated" int="3"/>
+                <entry cat="Widowed" int="4"/>
+                <entry cat="Divorced" int="5"/>
+                <entry cat="Never-married" int="6"/>
+            </map>
+            <vgh value="[0:6]">
+                <node value="[0:4]"/>
+                <node value="[5:6]"/>
+            </vgh>
+        </att>
+        <att index="7" name="Race">
+            <map>
+                <entry cat="White" int="0"/>
+                <entry cat="Black" int="1"/>
+                <entry cat="Amer-Indian-Eskimo" int="2"/>
+                <entry cat="Asian-Pac-Islander" int="3"/>
+                <entry cat="Other" int="4"/>
+            </map>
+            <vgh value="[0:4]">
+            </vgh>
+        </att>
+    </qid>
+    <sens>
+        <att index='5' name='Occupation'>
+            <map>
+                <entry cat="Adm-clerical" int='0'/>
+                <entry cat="Armed-Forces" int='1'/>
+                <entry cat="Craft-repair" int="2"/>
+                <entry cat="Exec-managerial" int="3"/>
+                <entry cat="Farming-fishing" int="4"/>
+                <entry cat="Handlers-cleaners" int="5"/>
+                <entry cat="Machine-op-inspct" int="6"/>
+                <entry cat="Other-service" int="7"/>
+                <entry cat="Priv-house-serv" int="8"/>
+                <entry cat="Prof-specialty" int="9"/>
+                <entry cat="Protective-serv" int="10"/>
+                <entry cat="Sales" int="11"/>
+                <entry cat="Tech-support" int="12"/>
+                <entry cat="Transport-moving" int="13"/>
+            </map>
+        </att>
+    </sens>
 </config>
-

@@ -7,7 +7,6 @@ import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.*;
 
@@ -124,7 +123,6 @@ public class Configuration {
                         String attName = nodeAtts.item(j).getNodeName();
                         if(attName.equals("filename")) {
                             setOutputFilename(nodeAtts.item(j).getNodeValue());
-                            //System.out.println(nodeAtts.item(j).getNodeValue());
                         }
                     }
                 } else if (child.getNodeName().equals("sqlitefile")){

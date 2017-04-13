@@ -6,16 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
-import databasewrapper.SqLiteWrapper;
 
 public class QueryResult implements Iterator{
     private String query;
     private Statement stat;
-    private ResultSet currentPage;
 
-    private int currentRecordId=0;
+    private int currentRID=0;
     private int currentPageId = 0;
     private ArrayList currentRecord = new ArrayList();
+    private ResultSet currentPage;
     private int recordSum;
     private int numCols=0;
     private int pageSize = 10000;
@@ -28,8 +27,6 @@ public class QueryResult implements Iterator{
         this.query = sql;
         this.stat = stat;
 
-
-
         ResultSet rs = stat.executeQuery("select count(*) as recordCount from ( " + sql + " )");
         if(rs.next())
             recordSum = rs.getInt(1);
@@ -37,9 +34,8 @@ public class QueryResult implements Iterator{
     }
 
     public boolean hasNext() {
-        if(currentRecordId>= recordSum) {
+        if(currentRID>= recordSum) {
             try {
-//                stat.close();
                 if(currentPage != null)
                     currentPage.close();
             } catch(SQLException e) {
@@ -66,8 +62,7 @@ public class QueryResult implements Iterator{
                 }
                 pageLoaded = false;
             }
-
-            currentRecordId++;
+            currentRID++;
             return currentPage;
         }
         return  null;
@@ -100,7 +95,6 @@ public class QueryResult implements Iterator{
                 ResultSetMetaData rsmd = currentPage.getMetaData();
                 numCols = rsmd.getColumnCount();
             }
-
             currentPageId++;
             pageLoaded = true;
 
